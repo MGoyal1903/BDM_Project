@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Air Quality Dashboard</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #f8f9fa;
+      }
+      .container {
+        margin-top: 50px;
+      }
+      .result-card {
+        margin-top: 30px;
+      }
+      .footer {
+        margin-top: 50px;
+        text-align: center;
+        font-size: 0.9em;
+        color: #6c757d;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="text-center mb-4">🌍 Air Quality Dashboard</h1>
+
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <form method="POST">
+            <div class="mb-3">
+              <label for="city" class="form-label">Select City:</label>
+              <select class="form-select" name="city" id="city" required>
+                <option value="" disabled selected>Choose a city</option>
+                {% for city in cities %}
+                <option value="{{ city }}">{{ city }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">
+              Get Air Quality
+            </button>
+          </form>
+        </div>
+      </div>
+
+      {% if air_quality %}
+      <div class="card result-card shadow-sm mt-4">
+        <div class="card-header bg-success text-white">
+          <h4>🌟 Air Quality in {{ air_quality.city }}</h4>
+        </div>
+        <div class="card-body">
+          <p><strong>PM2.5 (Min Value):</strong> {{ air_quality.min_value }}</p>
+          <p><strong>PM10 (Max Value):</strong> {{ air_quality.max_value }}</p>
+        </div>
+      </div>
+      {% endif %}
+
+      <iframe
+        src="{{ url_for('static', filename='Dash01.pdf') }}"
+        class="pdf-container"
+        height="600px"
+        width="100%"
+      >
+      </iframe>
+
+      <!-- Fallback for browsers not supporting iframe -->
+      <p>
+        Your browser does not support embedded PDFs.
+        <a href="{{ url_for('static', filename='Dash01.pdf') }}">Download PDF</a
+        >.
+      </p>
+
+      <div class="footer">
+        <p>&copy; 2024 Air Quality Monitoring System. All Rights Reserved.</p>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
